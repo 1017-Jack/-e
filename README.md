@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 <div align="center">
-=======
-# [作品集說明](PORTFOLIO.md)
-
-# GitHub Copilot 實戰工作坊:Agent Mode × MCP × Agentic Workflows
->>>>>>> a3d71fb (step 5: 建立作品集,開啟 Pages,完成結業)
 
 # 🎉 Congratulations 1017-Jack! 🎉
 
