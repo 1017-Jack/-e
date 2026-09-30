@@ -1,5 +1,7 @@
 // ===== 我的待辦清單 =====
-// 待辦資料只存在目前頁面記憶體中，重新整理後會清空。
+// 待辦資料會同步儲存至瀏覽器的 localStorage。
+
+const STORAGE_KEY = 'workshop-todos';
 
 const form = document.getElementById('todo-form');
 const input = document.getElementById('todo-input');
@@ -11,9 +13,30 @@ const themeToggle = document.getElementById('theme-toggle');
 const themeIcon = document.getElementById('theme-icon');
 const themeLabel = document.getElementById('theme-label');
 
-let todos = [];
+let todos = loadTodos();
 let currentFilter = 'all';
 let manuallySelectedTheme = false;
+
+// 從 localStorage 載入待辦清單，資料不存在或格式無效時以空清單開始。
+function loadTodos() {
+  try {
+    const savedTodos = localStorage.getItem(STORAGE_KEY);
+    const parsedTodos = savedTodos ? JSON.parse(savedTodos) : [];
+    return Array.isArray(parsedTodos) ? parsedTodos : [];
+  } catch (error) {
+    console.warn('讀取待辦清單失敗，將以空清單開始。', error);
+    return [];
+  }
+}
+
+// 將目前的待辦清單寫回 localStorage。
+function saveTodos() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+  } catch (error) {
+    console.warn('儲存待辦清單失敗。', error);
+  }
+}
 
 // 套用主題並更新切換按鈕的圖示、文字與狀態。
 function applyTheme(theme) {
@@ -111,6 +134,7 @@ function addTodo(text) {
     text,
     completed: false,
   });
+  saveTodos();
   render();
 }
 
@@ -119,12 +143,14 @@ function toggleTodo(id) {
   todos = todos.map((todo) => (
     todo.id === id ? { ...todo, completed: !todo.completed } : todo
   ));
+  saveTodos();
   render();
 }
 
 // 刪除指定待辦。
 function deleteTodo(id) {
   todos = todos.filter((todo) => todo.id !== id);
+  saveTodos();
   render();
 }
 
