@@ -447,13 +447,13 @@
 
     // 根據清單或篩選結果顯示合適的空狀態提示。
     function getEmptyMessage() {
-      if (todos.length === 0) {
-        return '還沒有任何待辦事項，新增一個吧!';
-      }
       if (currentFilter === 'active') {
-        return '太好了，沒有未完成的事項!';
+        return '目前沒有未完成的事項';
       }
-      return '還沒有已完成的事項。';
+      if (currentFilter === 'completed') {
+        return '目前沒有已完成的事項';
+      }
+      return '還沒有任何待辦事項，新增一個吧！';
     }
 
     // 更新待辦清單、空狀態與整體未完成數量。
